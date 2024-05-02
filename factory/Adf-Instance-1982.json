@@ -1,0 +1,9 @@
+{
+	"name": "Adf-Instance-1982",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "348aa743-901a-4a03-aa77-edd2d76a8434",
+		"tenantId": "84146a02-80ab-4974-8b69-cda11a421824"
+	}
+}
