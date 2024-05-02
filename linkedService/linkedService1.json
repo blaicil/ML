@@ -1,0 +1,40 @@
+{
+	"name": "linkedService1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"DB Server": {
+				"type": "String",
+				"defaultValue": "192.168.56.1"
+			},
+			"db port": {
+				"type": "String",
+				"defaultValue": "2311"
+			},
+			"DB Name": {
+				"type": "String",
+				"defaultValue": "family"
+			},
+			"Db User": {
+				"type": "String",
+				"defaultValue": "root"
+			},
+			"Db Pass": {
+				"type": "String",
+				"defaultValue": "jhdaAD"
+			}
+		},
+		"annotations": [],
+		"type": "MySql",
+		"typeProperties": {
+			"server": "@{linkedService().DB Server}",
+			"port": "@{linkedService().db port}",
+			"database": "@{linkedService().DB Name}",
+			"username": "@{linkedService().Db User}",
+			"sslMode": 1,
+			"useSystemTrustStore": 0,
+			"password": "@{linkedService().Db Pass}",
+			"driverVersion": "v2"
+		}
+	}
+}
