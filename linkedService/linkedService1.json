@@ -5,23 +5,22 @@
 		"parameters": {
 			"DB Server": {
 				"type": "String",
-				"defaultValue": "192.168.56.1"
+				"defaultValue": "mysql-rfam-public.ebi.ac.uk"
 			},
 			"db port": {
 				"type": "String",
-				"defaultValue": "2311"
+				"defaultValue": "4497"
 			},
 			"DB Name": {
 				"type": "String",
-				"defaultValue": "family"
+				"defaultValue": "Rfam"
 			},
 			"Db User": {
 				"type": "String",
-				"defaultValue": "root"
+				"defaultValue": "rfamro"
 			},
 			"Db Pass": {
-				"type": "String",
-				"defaultValue": "jhdaAD"
+				"type": "String"
 			}
 		},
 		"annotations": [],
@@ -31,8 +30,7 @@
 			"port": "@{linkedService().db port}",
 			"database": "@{linkedService().DB Name}",
 			"username": "@{linkedService().Db User}",
-			"sslMode": 1,
-			"useSystemTrustStore": 0,
+			"sslMode": 0,
 			"password": "@{linkedService().Db Pass}",
 			"driverVersion": "v2"
 		}
