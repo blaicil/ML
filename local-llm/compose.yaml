@@ -1,0 +1,40 @@
+# Local LLM: Ollama in a container serving a Gemma model.
+#   docker compose up -d                                         # CPU
+#   docker compose -f compose.yaml -f compose.gpu.yaml up -d     # NVIDIA GPU
+name: local-llm
+
+services:
+  ollama:
+    image: ollama/ollama:${OLLAMA_IMAGE_TAG:-latest}
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      # Bound to localhost only; set OLLAMA_BIND=0.0.0.0 to expose on your LAN.
+      - "${OLLAMA_BIND:-127.0.0.1}:${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:-10m}
+    healthcheck:
+      # The image ships without curl; the ollama CLI talks to the local server.
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # One-shot job: pulls the model into the shared volume, then exits.
+  # Re-running it is cheap: already-downloaded layers are skipped.
+  model-pull:
+    image: ollama/ollama:${OLLAMA_IMAGE_TAG:-latest}
+    container_name: ollama-model-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["ollama", "pull", "${OLLAMA_MODEL:-gemma3:4b}"]
+    restart: "no"
+
+volumes:
+  ollama_data:
